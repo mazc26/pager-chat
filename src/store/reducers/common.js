@@ -20,6 +20,9 @@ const commonSlice = createSlice({
     setMessages(state, action) {
       state.messages = parseMessages(state.messages, action.payload);
     },
+    setIsFetching(state, action) {
+      
+    },
     searchGifs(state) {
       state.isRandom ? state.gifs = [] : state.gifs;
       state.isSearchingGifs = true;
@@ -56,6 +59,7 @@ export const {
   //common functions
   setUsername,
   setMessages,
+  setIsFetching,
   //giphy actions
   searchGifs,
   searchGifsSuccess,

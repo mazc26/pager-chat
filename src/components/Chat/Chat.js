@@ -11,6 +11,7 @@ import './Chat.scss';
 const Chat = ({ socket, username, history, setMessages }) => {
   const [message, setMessage] = useState("");
   const [showGif, setShowGif] = useState(false);
+  const [userConnected, setUserConnected] = useState(false);
 
   useEffect(() => {
     if (!username) {
@@ -21,10 +22,17 @@ const Chat = ({ socket, username, history, setMessages }) => {
   useEffect(() => {
     if (socket) {
       socket.on('message', setMessages)
+      socket.once('user-connected', username => {
+        setUserConnected(true)
+      })
     }
   }, [socket])
 
   const handleChange = message => {
+    if (message === "/gif") {
+      setShowGif(true);
+    }
+    
     socket.emit('typing', message.length);
     setMessage(message);
   }
@@ -44,17 +52,23 @@ const Chat = ({ socket, username, history, setMessages }) => {
     socket.emit('typing', false);
   }
 
+  const handleGifClose = () => {
+    if (message === "/gif")
+    setMessage("")
+  }
+
   return (
     <div className="chat-container">
       <div className="chat-box">
         <div id="scrollBottom" className="chat-message-container">
           <div className="chats">
-            <ChatMessages />
+            <ChatMessages userConnected={userConnected} />
             {
               showGif &&
                 <GifMessages 
                   socket={socket} 
-                  setShowGif={setShowGif} 
+                  setShowGif={setShowGif}
+                  onClose={handleGifClose} 
                 />
             } 
           </div>

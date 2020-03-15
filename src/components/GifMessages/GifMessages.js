@@ -5,7 +5,16 @@ import GifPagination from './GifPagination';
 
 import './GifMessages.scss';
 
-const GifMessages = ({ setShowGif, searchGifs, gifs, socket, searchRandomGifs, isSearchingGifs }) => {
+const GifMessages = ({ 
+    setShowGif, 
+    searchGifs, 
+    gifs, 
+    socket, 
+    searchRandomGifs, 
+    isSearchingGifs,
+    onClose, 
+  }) => {
+
   const [value, setValue] = useState("");
   
   useEffect(() => {
@@ -17,8 +26,16 @@ const GifMessages = ({ setShowGif, searchGifs, gifs, socket, searchRandomGifs, i
     searchGifs({offset: 0, value})
   }
 
+  const handleClose = () => {
+    if (onClose) {
+      onClose()
+    }
+    setShowGif(false)
+  }
+
   const handleSendGif = (url, alt) => {
     socket.emit('image-message', {url, alt});
+    handleClose();
   };
 
   const getGifs = () => {
@@ -37,7 +54,6 @@ const GifMessages = ({ setShowGif, searchGifs, gifs, socket, searchRandomGifs, i
             handleSendGif(
               gif.images.preview_gif.url, gif.images.preview_gif.alt
             )
-            setShowGif(false)
           }} 
           className="gif-img"
           src={gif.images.preview_gif.url} 
@@ -49,11 +65,12 @@ const GifMessages = ({ setShowGif, searchGifs, gifs, socket, searchRandomGifs, i
 
   return (
     <div className="gif-message-container">
-      <div onClick={()=> setShowGif(false)} className="gif-close-btn">
+      <div onClick={handleClose} className="gif-close-btn">
         ×
       </div>
       <div className="search-bar-container">
         <Input 
+          autoFocus
           value={value} 
           onChange={handleChange} 
           placeholder="Type to search a gif" 

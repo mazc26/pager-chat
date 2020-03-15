@@ -1,11 +1,28 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 
 import { parseDate } from '../../utils/parseDate';
 import Avatar from '../Avatar';
 
 import './ChatMessages.scss';
 
-const ChatMessages = ({ messages, theresNoMessages }) => {
+const ChatMessages = ({ messages, userConnected }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  
+  useEffect(() => {
+    setIsLoading(true)
+  }, [])
+
+  useEffect(() => {
+    if (userConnected) {
+      setIsLoading(false)
+    } 
+  }, [userConnected])
+
+  useEffect(() => {
+    if (document.getElementById("bottom-container")) {
+      document.getElementById("bottom-container").scrollIntoView()  
+    }
+  }, [messages])
 
   const getMessageByType = message => {
     switch(message.type) {
@@ -16,17 +33,27 @@ const ChatMessages = ({ messages, theresNoMessages }) => {
     }
   }
 
-  useEffect(() => {
-    if (document.getElementById("bottom-container")) {
-      document.getElementById("bottom-container").scrollIntoView()  
-    }
-  }, [messages])
+  if (isLoading) {
+    return (
+      <div className="loader-container">
+        <div className="loader">Loading...</div>
+      </div> 
+    )
+  }
+
+  if (userConnected && !isLoading && !messages.length) {
+    return (
+      <div className="no-msgs">
+        Theres no messages available right now, please type something to start chating
+      </div>
+    )
+  }
 
   return (
     <Fragment>
       <div>
         {
-          messages.length ? messages.map((message, index) => (
+          messages.map((message, index) => (
             <div key={index} className="message-container">
               {
                 <Avatar username={message.username} />
@@ -51,13 +78,10 @@ const ChatMessages = ({ messages, theresNoMessages }) => {
                 </div>
               </div>
             </div>
-          )) :
-          <div className="loader-container">
-            <div className="loader">Loading...</div>
-          </div> 
+          ))
         }
       </div>
-      <div id="bottom-container"></div>
+      <div id="bottom-container" />
     </Fragment>
   )
 };
