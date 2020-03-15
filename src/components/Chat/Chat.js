@@ -32,8 +32,7 @@ const Chat = ({ socket, username, history, setMessages }) => {
     if (message === "/gif") {
       setShowGif(true);
     }
-    
-    socket.emit('typing', message.length);
+    socket.emit('typing', !!message.length);
     setMessage(message);
   }
 
@@ -48,8 +47,12 @@ const Chat = ({ socket, username, history, setMessages }) => {
     }
   }
 
-  const handleBlur = e => {
+  const handleBlur = () => {
     socket.emit('typing', false);
+  }
+
+  const handleFocus = () => {
+    socket.emit('typing', !!message.length);
   }
 
   const handleGifClose = () => {
@@ -81,6 +84,7 @@ const Chat = ({ socket, username, history, setMessages }) => {
             placeholder={"type message here"} 
             value={message}
             onBlur={handleBlur}
+            onFocus={handleFocus}
           />
           <img 
             src={GifImg} 
