@@ -3,12 +3,9 @@ import React, { useEffect, useState } from 'react';
 import './GifPagination.scss';
 
 const GifPagination = ({ 
-    pagination, 
-    gifs, 
-    isRandom, 
+    pagination,  
     value, 
     searchGifs, 
-    searchRandomGifs,
     isSearchingGifs,
   }) => {
   const [hasMoreItems, setHasMoreItems] = useState(false);
@@ -19,14 +16,10 @@ const GifPagination = ({
       setHasMoreItems(pagination.total_count > pagination.count)
       setOffset(pagination.offset + 24)
     }
-  }, [pagination, gifs])
+  }, [pagination])
 
   const handleLoadMore = () => {
-    if (isRandom) {
-      searchRandomGifs(offset)
-    } else {
-      searchGifs({value, offset})
-    }
+    searchGifs({value, offset})
   }
 
   return (

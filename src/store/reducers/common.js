@@ -20,15 +20,11 @@ const commonSlice = createSlice({
     setMessages(state, action) {
       state.messages = parseMessages(state.messages, action.payload);
     },
-    setIsFetching(state, action) {
-      
-    },
-    searchGifs(state) {
-      state.isRandom ? state.gifs = [] : state.gifs;
+    searchGifs(state, action) {
       state.isSearchingGifs = true;
+      state.gifs = action.payload.offset ? state.gifs : [];
     },
     searchGifsSuccess(state, action) {
-      state.isRandom = false;
       state.pagination = action.payload.pagination
       state.isSearchingGifs = false;
       state.gifs = [...state.gifs, ...action.payload.data]
@@ -36,21 +32,6 @@ const commonSlice = createSlice({
     searchGifsError(state, action) {
       state.isFetchingGifs = false;
       state.gifError = action.payload;
-      console.error(action.payload);
-    },
-    searchRandomGifs(state) {
-      state.isSearchingGifs = true;
-    },
-    searchRandomGifsSuccess(state, action) {
-      state.isRandom = true;
-      state.pagination = action.payload.pagination
-      state.isSearchingGifs = false;
-      state.gifs = [...state.gifs, ...action.payload.data]
-    },
-    searchRandomGifsError(state, action) {
-      state.isSearchingGifs = false;
-      state.gifError = action.payload;
-      console.error(action.payload);
     },
   }
 })
@@ -64,9 +45,6 @@ export const {
   searchGifs,
   searchGifsSuccess,
   searchGifsError,
-  searchRandomGifs,
-  searchRandomGifsSuccess,
-  searchRandomGifsError,
 } = commonSlice.actions
 
 export default commonSlice.reducer

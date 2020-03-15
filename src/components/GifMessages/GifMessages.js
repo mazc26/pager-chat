@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import Input from '../Input';
 import GifPagination from './GifPagination';
@@ -10,20 +10,27 @@ const GifMessages = ({
     searchGifs, 
     gifs, 
     socket, 
-    searchRandomGifs, 
     isSearchingGifs,
     onClose, 
   }) => {
 
   const [value, setValue] = useState("");
-  
+  const timeoutRef = useRef(null);
+
   useEffect(() => {
-    searchRandomGifs(0);
+    searchGifs({offset: 0, value: ""});
   }, [])
 
   const handleChange = value => {
     setValue(value)
-    searchGifs({offset: 0, value})
+    if (timeoutRef.current !== null) {  
+      clearTimeout(timeoutRef.current);         
+    }
+
+    timeoutRef.current = setTimeout(()=> {    
+      timeoutRef.current = null;                
+      searchGifs({offset: 0, value})         
+    }, 500); 
   }
 
   const handleClose = () => {
@@ -39,9 +46,7 @@ const GifMessages = ({
   };
 
   const getGifs = () => {
-    if (!value.length && !gifs.length) {
-      searchRandomGifs(0);
-    } else if (isSearchingGifs) {
+    if (isSearchingGifs) {
       return <div className="loader-container gif-container"><div className="loader">Loader...</div></div>
     } else if (!isSearchingGifs && !gifs.length && !value.length) {
       return <div className="no-gifs-found">No gifs found, please try with a different criteria</div>

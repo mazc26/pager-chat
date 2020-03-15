@@ -1,9 +1,9 @@
 import { combineEpics } from 'redux-observable'
-import { searchGifsEpic, searchRandomGifsEpic } from './common'
+import { searchGifsEpic } from './common'
 
 const rootEpic = combineEpics(
   searchGifsEpic,
-  searchRandomGifsEpic,
+  //searchRandomGifsEpic,
 )
 
 export default rootEpic
