@@ -1,0 +1,38 @@
+.chat-prompt-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  .prompt-box {
+    position: relative;
+    width: 600px;
+    height: 300px;
+    border-radius: 6px;
+    padding: 40px;
+    box-sizing: border-box;
+    -webkit-box-shadow: 0px 0px 12px -4px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 12px -4px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 12px -4px rgba(0,0,0,0.75);
+
+    .main-title {
+      font-size: 32px;
+    }
+
+    .name-input {
+      font-size: 14px;
+      margin-top: 40px;
+    }
+
+    .input-container {
+      margin-top: 6px;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: flex-end;
+      height: 35%;
+      align-items: flex-end;
+    }
+  }
+}

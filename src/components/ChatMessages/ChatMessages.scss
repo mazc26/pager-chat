@@ -1,0 +1,40 @@
+.message-container {
+  display: flex;
+  margin-bottom: 24px;
+
+  .name-hour-container {
+    display: flex;
+    margin-left: 6px;
+    
+    .username {
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .hour {
+      font-weight: normal;
+      align-self: center;
+      font-size: 12px;
+      margin-left: 5px;
+      color: #9e9e9e;
+    }
+  }
+  .message {
+    margin: 4px 6px;
+    font-size: 14px;
+    line-height: 1.2em;
+    word-break: break-word;
+  }
+}
+
+.chat-gif-img {
+  width: 150px;
+  height: 150px;
+  margin: 5px 0;
+}
+
+.user-connected-container {
+  margin-top: 20px;
+  color: red;
+  font-size: 20px;
+}
